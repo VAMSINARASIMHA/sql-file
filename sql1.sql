@@ -328,3 +328,44 @@ FROM student s1
 WHERE EXISTS (SELECT 1 FROM student s2 WHERE s1.rollno = s2.rollno AND s1.id > s2.id);
                             
 SELECT * FROM student s1 join student s2 WHERE s1.id > s2.id;
+
+
+
+select * from student s where exists (select 1 from student_1 s1 where s.id=s1.id);
+
+-- NOT EXISTS
+select * from student s where not exists (select 1 from student_1 s1 where s.id=s1.id);
+
+
+
+-- Corelated subquery
+ select * from student s where marks > (select avg(marks) from student where id = s.id);
+ 
+ 
+ 
+ -- subquery in select clause.
+select *,(select avg(marks) from student) as 'total' from student;
+ 
+ 
+select *, -- average marks 
+(select avg(marks) from student) as 'total' from student;
+
+
+ select *, 
+ (select avg(marks) from student) as total,(select id-marks) as 'subtraction' from student;
+ 
+ 
+  select *, 
+ (select avg(marks) from student) as total,id - (select marks) as 'subtraction' from student;
+ 
+ 
+  select *, 
+ (select avg(marks) from student) as total,id - (select total) as 'subtraction' from student;
+ 
+ 
+ 
+ -- subquery in from clause.
+select * from (select *, 
+(select avg(marks) from student) as total,(select id-marks) as subtraction from student) as a_block where subtraction > 0; 
+
+select name,id-marks as sub from student;
